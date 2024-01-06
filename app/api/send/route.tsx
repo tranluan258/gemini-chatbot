@@ -6,7 +6,7 @@ const model = genAI.getGenerativeModel({
   model: 'gemini-pro',
 });
 
-type ResponseData = {
+export type ResponseData = {
   text: string;
 };
 

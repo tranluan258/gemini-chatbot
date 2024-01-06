@@ -4,6 +4,7 @@ import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useState } from 'react';
+import { ResponseData } from './api/send/route';
 
 interface IChatMessage {
   clientMessage: string;
@@ -35,7 +36,7 @@ const ChatContainer = (): JSX.Element => {
       body: JSON.stringify({ prompt: savePrompt }),
     })
       .then((res) => res.json())
-      .then(async (data) => {
+      .then(async (data: ResponseData) => {
         setList(list.slice(0, list.length - 1));
         const newMessage: IChatMessage = {
           clientMessage: savePrompt,
