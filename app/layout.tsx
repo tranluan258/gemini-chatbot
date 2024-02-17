@@ -11,6 +11,9 @@ const fontSans = FontSans({
 
 export const metadata: Metadata = {
   title: 'Gemini Google AI Clone',
+  icons: {
+    icon: 'https://www.gstatic.com/lamda/images/gemini_favicon_f069958c85030456e93de685481c559f160ea06b.png',
+  },
 };
 
 export default function RootLayout({
