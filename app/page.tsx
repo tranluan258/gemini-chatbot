@@ -15,12 +15,6 @@ interface IChatMessage {
 const ChatContainer = (): JSX.Element => {
   const [prompt, setPrompt] = useState<string>('');
   const [list, setList] = useState<IChatMessage[]>([]);
-  const { theme } = useTheme();
-
-  const textColorClass = theme === 'dark' ? 'text-white' : 'text-black';
-  const inputBgColor = theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200';
-  const buttonBgColor = theme === 'dark' ? 'bg-gray-700' : 'bg-gray-200';
-  const buttonBgFocus = theme === 'dark' ? 'bg-gray-800' : 'bg-gray-400';
 
   const handleClick = (event: React.FormEvent<HTMLFormElement>) => {
     event.preventDefault();
@@ -77,24 +71,20 @@ const ChatContainer = (): JSX.Element => {
         </div>
       </div>
       <div className="flex flex-col justify-between items-center h-[90%]">
-        <div className="w-1/2 max-h-[800px] h-[800px] p-5 m-10  overflow-y-scroll overflow-auto overscroll-y-auto">
+        <div className="w-1/2 max-h-[800px] h-[800px] p-5 m-10 overflow-hidden overscroll-y-auto overflow-y-auto">
           <div>
             {list.map((item, index) => {
               return (
                 <div key={index} className="flex justify-start flex-col">
                   <div>
-                    <h4>You: </h4>
-                    <div
-                      className={`rounded-md p-2 m-2 ${textColorClass} text-left`}
-                    >
+                    <h4 className="font-bold">You: </h4>
+                    <div className={`rounded-md p-2 m-2  text-left`}>
                       {item.clientMessage}
                     </div>
                   </div>
                   <div>
-                    <h4>Bot: </h4>
-                    <div
-                      className={`rounded-md p-2 m-2 ${textColorClass} text-left`}
-                    >
+                    <h4 className="font-bold">Bot: </h4>
+                    <div className={`rounded-md p-2 m-2  text-left`}>
                       <Markdown content={item.serverMessage} />
                     </div>
                   </div>
@@ -107,7 +97,7 @@ const ChatContainer = (): JSX.Element => {
           <form onSubmit={handleClick} className="flex w-full">
             <div className="relative w-full">
               <Input
-                className={`w-full border-0 focus:ring-0 outline-none shadow-2xl ${inputBgColor} py-2 pr-10 pl-3 rounded-xl h-12`}
+                className={`w-full border-0 focus:ring-0 outline-none shadow-2xl bg-graytheme py-2 pr-10 pl-3 rounded-xl h-12`}
                 placeholder="Type prompt here..."
                 value={prompt}
                 onChange={(e) => {
@@ -115,7 +105,7 @@ const ChatContainer = (): JSX.Element => {
                 }}
               />
               <Button
-                className={`absolute top-0 right-0 h-full p-4 rounded-xl  ${buttonBgColor} hover:${buttonBgFocus} focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50`}
+                className={`absolute top-0 right-0 h-full p-4 rounded-xl bg-graytheme focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-opacity-50`}
                 type="submit"
               >
                 <svg
