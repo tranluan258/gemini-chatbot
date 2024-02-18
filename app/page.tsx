@@ -3,9 +3,8 @@ import Markdown from '@/components/markdown';
 import { ModeToggle } from '@/components/mode-toggle';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
-import { useState } from 'react';
-import { ResponseData } from './api/send/route';
-import { useTheme } from 'next-themes';
+import { useRef, useState } from 'react';
+import { ResponseData } from './api/conversation/route';
 
 interface IChatMessage {
   clientMessage: string;
@@ -14,6 +13,7 @@ interface IChatMessage {
 
 const ChatContainer = (): JSX.Element => {
   const [prompt, setPrompt] = useState<string>('');
+  const historyRef = useRef<string[]>([]);
   const [list, setList] = useState<IChatMessage[]>([]);
 
   const handleClick = (event: React.FormEvent<HTMLFormElement>) => {
@@ -29,13 +29,14 @@ const ChatContainer = (): JSX.Element => {
       serverMessage: '...',
     };
     setList([...list, loadingMessage]);
+    historyRef.current.push(savePrompt);
 
-    fetch('/api/send', {
+    fetch('/api/conversation', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: savePrompt }),
+      body: JSON.stringify({ prompt: historyRef.current }),
     })
       .then((res) => res.json())
       .then(async (data: ResponseData) => {
@@ -44,6 +45,7 @@ const ChatContainer = (): JSX.Element => {
           clientMessage: savePrompt,
           serverMessage: data.text,
         };
+        historyRef.current = [data.text];
         setList([...list, newMessage]);
       })
       .catch((error) => {
