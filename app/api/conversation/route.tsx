@@ -10,11 +10,7 @@ export type ResponseData = {
   text: string;
 };
 
-type Request = {
-  json: () => Promise<{ prompt: string }>;
-};
-
-export async function POST(req: Request, _res: NextApiResponse<ResponseData>) {
+export async function POST(req: any, _res: NextApiResponse<ResponseData>) {
   const { prompt } = await req.json();
   const result = await model.generateContent(prompt);
   const response = result.response;
