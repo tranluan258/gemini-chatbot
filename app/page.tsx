@@ -5,6 +5,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { useRef, useState } from 'react';
 import { ResponseData } from './api/conversation/route';
+import { Skeleton } from '@/components/ui/skeleton';
 
 interface IChatMessage {
   clientMessage: string;
@@ -26,7 +27,7 @@ const ChatContainer = (): JSX.Element => {
     setPrompt('');
     const loadingMessage: IChatMessage = {
       clientMessage: savePrompt,
-      serverMessage: '...',
+      serverMessage: '',
     };
     setList([...list, loadingMessage]);
     historyRef.current.push(savePrompt);
@@ -36,7 +37,7 @@ const ChatContainer = (): JSX.Element => {
       headers: {
         'Content-Type': 'application/json',
       },
-      body: JSON.stringify({ prompt: historyRef.current }),
+      body: JSON.stringify({ prompt: savePrompt }),
     })
       .then((res) => res.json())
       .then(async (data: ResponseData) => {
@@ -85,10 +86,25 @@ const ChatContainer = (): JSX.Element => {
                     </div>
                   </div>
                   <div>
-                    <h4 className="font-bold">Bot: </h4>
-                    <div className={`rounded-md p-2 m-2  text-left`}>
-                      <Markdown content={item.serverMessage} />
-                    </div>
+                    {item.serverMessage === '' ? (
+                      <div>
+                        <h4 className="font-bold mb-2">Bot: </h4>
+                        <div className="flex items-center space-x-4">
+                          <Skeleton className="h-12 w-12 rounded-full" />
+                          <div className="space-y-2">
+                            <Skeleton className="h-4 w-[600px]" />
+                            <Skeleton className="h-4 w-[600px]" />
+                          </div>
+                        </div>
+                      </div>
+                    ) : (
+                      <div>
+                        <h4 className="font-bold">Bot: </h4>
+                        <div className={`rounded-md p-2 m-2  text-left`}>
+                          <Markdown content={item.serverMessage} />
+                        </div>
+                      </div>
+                    )}
                   </div>
                 </div>
               );
